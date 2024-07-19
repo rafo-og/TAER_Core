@@ -1,16 +1,11 @@
 import wx
 import os
 import sys
+import TAER_Add_Ons
 
 
 class SelectConfigDialog(wx.Dialog):
-    # Check if the application has been frozen to executable file
-    if getattr(sys, "frozen", False):
-        CONFIGS_PATH = os.path.dirname(sys.executable)
-        CONFIGS_PATH = os.path.join(CONFIGS_PATH, "chip_configs")
-        print(f"Frozen mode: {CONFIGS_PATH}")
-    else:
-        CONFIGS_PATH = r"./chip_configs"
+    CONFIGS_PATH = os.path.join(os.path.dirname(TAER_Add_Ons.__file__), ("chip_configs"))
 
     def __init__(self, parent):
         dlg_style = (wx.CAPTION | wx.STAY_ON_TOP) ^ wx.RESIZE_BORDER

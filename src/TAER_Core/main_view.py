@@ -20,6 +20,7 @@ from TAER_Core.Views import (
 )
 from logging import StreamHandler
 from TAER_Core.Libs.config import ViewConfig
+import TAER_Add_Ons
 
 
 class MainView(wx.Frame):
@@ -92,13 +93,14 @@ class MainView(wx.Frame):
         return tag
 
     def __get_current_version(self):
-        if getattr(sys, "frozen", False):
-            path = os.path.dirname(sys.executable)
-            path = os.path.join(path, "config", "VERSION")
-        else:
-            path = os.path.join(os.path.dirname(__file__), "config", "VERSION")
-            self.__write_version_file(path)
-        return self.__read_version_file(path)
+        # if getattr(sys, "frozen", False):
+        #     path = os.path.dirname(sys.executable)
+        #     path = os.path.join(path, "config", "VERSION")
+        # else:
+        #     path = os.path.join(os.path.dirname(__file__), "config", "VERSION")
+        #     self.__write_version_file(path)
+        # return self.__read_version_file(path)
+        pass
 
     def start_event_loop(self):
         self.app.MainLoop()
@@ -125,12 +127,13 @@ class MainView(wx.Frame):
             logger.addHandler(txtHandler)
 
     def __get_logger_keys(self):
-        # Check if the application has been frozen to executable file
-        if getattr(sys, "frozen", False):
-            package_folder = os.path.dirname(sys.executable)
+        app_log_filepath = os.path.join(os.getcwd(), "config", "loggers.conf")
+        if os.path.exists(app_log_filepath):
+            log_filepath = app_log_filepath
         else:
-            package_folder = os.path.dirname(__file__)
-        with open(os.path.join(package_folder, "config", "loggers.conf"), "r") as f:
+            log_filepath = os.path.join(os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf")
+
+        with open(log_filepath, "r") as f:
             lines = f.read()
             pattern_str = r"(?<=keys=)(.*)"
             pattern = re.compile(pattern_str, re.MULTILINE | re.IGNORECASE)

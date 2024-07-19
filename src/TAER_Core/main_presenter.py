@@ -13,6 +13,7 @@ from TAER_Core.main_view import MainView
 from TAER_Core.Views import SelectConfigDialog
 from TAER_Core.Controllers import *
 from TAER_Core.Libs import Config
+import TAER_Add_Ons
 from TAER_Add_Ons.Tools import *
 from TAER_Add_Ons.Tools.tool_base import ToolBase
 from TAER_Add_Ons.Initializers import *
@@ -57,16 +58,18 @@ class MainPresenter:
         """
         Configure the logging module
         """
-        # Check if the application has been frozen to executable file
-        if getattr(sys, "frozen", False):
-            package_folder = os.path.dirname(sys.executable)
+        app_log_filepath = os.path.join(os.getcwd(), "config", "loggers.conf")
+        if os.path.exists(app_log_filepath):
+            log_filepath = app_log_filepath
         else:
-            package_folder = os.path.dirname(__file__)
+            log_filepath = os.path.join(
+                os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf"
+            )
         # Create logs folder if it isn't exist
-        log_folder = os.path.join(package_folder, "logs")
+        log_folder = os.path.join(os.getcwd(), "logs")
         os.makedirs(log_folder, exist_ok=True)
         # Get logger configurations
-        logging.config.fileConfig(os.path.join(package_folder, "config", "loggers.conf"))
+        logging.config.fileConfig(log_filepath)
         # Get app logger from configuration
         self.logger = logging.getLogger(__name__)
 
@@ -97,8 +100,12 @@ class MainPresenter:
         self.delegates_edit_register_chip = DelegatesEditRegisterChip(
             self, self.view.edit_register_chip_frame, self.model
         )
-        self.delegates_edit_dac = DelegatesEditMenuBase(self, self.view.edit_dac_frame, self.model)
-        self.model.device.register_on_connection_change_callback(self.delegates_main.on_connection_change)
+        self.delegates_edit_dac = DelegatesEditMenuBase(
+            self, self.view.edit_dac_frame, self.model
+        )
+        self.model.device.register_on_connection_change_callback(
+            self.delegates_main.on_connection_change
+        )
         self.model.register_on_model_update_cb(self.update_view)
 
     def __config_tools(self):
@@ -126,7 +133,9 @@ class MainPresenter:
             else:
                 new_init = None
         if self.initializer is None:
-            self.logger.warning("Default initializer loaded. Configured initializer not found.")
+            self.logger.warning(
+                "Default initializer loaded. Configured initializer not found."
+            )
             self.initializer = InitializerBase(self.model)
 
     def start(self):
@@ -184,14 +193,20 @@ class MainPresenter:
         wx.CallAfter(self.__update_view_on_gui_thread, id)
 
     def __update_view_on_gui_thread(self, id):
-        if id == "init" or (id == "" and self.view.IsShown()) or self.view.GetId() == id:
+        if (
+            id == "init"
+            or (id == "" and self.view.IsShown())
+            or self.view.GetId() == id
+        ):
             self.view.set_menus_state(self.model.device.is_connected)
             # self.view.set_menus_state(True)
 
         view = self.view.edit_register_device_frame
         if id == "init" or (id == "" and view.IsShown()) or view.GetId() == id:
             registers = self.model.dev_reg_db
-            self.view.edit_register_device_frame.update_values(registers.get_item_list())
+            self.view.edit_register_device_frame.update_values(
+                registers.get_item_list()
+            )
 
         view = self.view.edit_register_chip_frame
         if id == "init" or (id == "" and view.IsShown()) or view.GetId() == id:
@@ -206,7 +221,9 @@ class MainPresenter:
         view = self.view.adc_control_frame
         if id == "init" or (id == "" and view.IsShown()) or view.GetId() == id:
             adcs = self.model.adc_db
-            self.view.adc_control_frame.update_values(adcs.get_item_list(), self.model.adc_tmeas)
+            self.view.adc_control_frame.update_values(
+                adcs.get_item_list(), self.model.adc_tmeas
+            )
 
         for _, tool in self.tools.items():
             if tool.is_shown() and id == "":
@@ -306,18 +323,26 @@ class MainPresenter:
                 # log data
                 if raw_data.size > 0:
                     event_rate = 0.125 * n_events / (raw_data[-1] - raw_data[1])
-                    self.logger.info("New data appended. Event rate :" + str(round(event_rate, 2)) + "Meps/s.")
+                    self.logger.info(
+                        "New data appended. Event rate :"
+                        + str(round(event_rate, 2))
+                        + "Meps/s."
+                    )
                 addr_rd, addr_wr = self.model.device.actions.check_addr_ram()
                 addr_diff = addr_wr - addr_rd
                 if addr_diff > 2 * n_events:
-                    self.logger.warning("WARNING! Data is arriving faster that time required for writting.")
+                    self.logger.warning(
+                        "WARNING! Data is arriving faster that time required for writting."
+                    )
                 self.logger.info("Execution time: " + str(round(time.time() - t1, 3)))
             if self.stop_flag:
                 break
             elif self.one_shot_flag:
                 self.one_shot_flag = False
                 break
-            flags = not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            flags = (
+                not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            )
         self.model.device.actions.stop_capture()
         self.model.device.actions.reset_fifo()
         self.model.device.actions.reset_ram()
@@ -344,18 +369,26 @@ class MainPresenter:
                 # log data
                 if raw_data.size > 0:
                     event_rate = 0.125 * n_events / (raw_data[-1] - raw_data[1])
-                    self.logger.info("New data appended. Event rate :" + str(round(event_rate, 2)) + "Meps/s.")
+                    self.logger.info(
+                        "New data appended. Event rate :"
+                        + str(round(event_rate, 2))
+                        + "Meps/s."
+                    )
                 addr_rd, addr_wr = self.model.device.actions.check_addr_ram()
                 addr_diff = addr_wr - addr_rd
                 if addr_diff > 2 * n_events:
-                    self.logger.warning("WARNING! Data is arriving faster that time required for writting.")
+                    self.logger.warning(
+                        "WARNING! Data is arriving faster that time required for writting."
+                    )
                 self.logger.info("Execution time: " + str(round(time.time() - t1, 3)))
             if self.stop_flag:
                 break
             elif self.one_shot_flag:
                 self.one_shot_flag = False
                 break
-            flags = not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            flags = (
+                not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            )
         self.model.device.actions.stop_capture()
         self.model.device.actions.reset_fifo()
         self.model.device.actions.reset_ram()
@@ -389,7 +422,9 @@ class MainPresenter:
             elif self.one_shot_flag:
                 self.one_shot_flag = False
                 break
-            flags = not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            flags = (
+                not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
+            )
             self.logger.debug(f"Time: {(time.time()-t1)*1000} ms")
 
     def run_adc(self):
@@ -421,21 +456,29 @@ class MainPresenter:
         return False
 
     def send_serial_data(self):
-        raw_data = self.view.serial_control_frame.panel_serial_control.serial_tx_box.GetValue()
+        raw_data = (
+            self.view.serial_control_frame.panel_serial_control.serial_tx_box.GetValue()
+        )
         serial_data_tx = [int(num, 0) for num in raw_data.replace(" ", "").split(",")]
         self.logger.debug(f"Serial data sent: {serial_data_tx}")
         self.model.device.actions.write_serial(serial_data_tx)  # Requesting RX data
-        serial_data_rx = self.model.device.actions.read_serial()  # Reading RX data from FPGA FIFO
+        serial_data_rx = (
+            self.model.device.actions.read_serial()
+        )  # Reading RX data from FPGA FIFO
         self.logger.debug(f"Serial data read: {serial_data_rx}")
         if serial_data_rx is not None:
             self.view.serial_control_frame.panel_serial_control.serial_rx_box.SetValue(
                 str(", ".join(str(s) for s in serial_data_rx))
             )
         else:
-            self.view.serial_control_frame.panel_serial_control.serial_rx_box.SetValue("No RX data received.")
+            self.view.serial_control_frame.panel_serial_control.serial_rx_box.SetValue(
+                "No RX data received."
+            )
 
     def update_adc_ts(self):
-        self.model.adc_tmeas = float(self.view.adc_control_frame.panel_menu.sampletime_textbox.GetValue())
+        self.model.adc_tmeas = float(
+            self.view.adc_control_frame.panel_menu.sampletime_textbox.GetValue()
+        )
 
     def update_adc_panels(self):
         adcs = self.model.adc_db
@@ -491,7 +534,9 @@ class MainPresenter:
         while self.flag_adc_run:
             for adc in self.model.adc_db.d_item.values():
                 t1 = time.time()
-                adc_data = self.model.device.actions.read_adc(adc.device_id, adc.channel)
+                adc_data = self.model.device.actions.read_adc(
+                    adc.device_id, adc.channel
+                )
                 adc.add_data(t1 - t0, adc_data)
             self.update_view(id)
             if self.flag_adc_run:
