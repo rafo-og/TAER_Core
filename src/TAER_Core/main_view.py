@@ -1,5 +1,6 @@
 import sys
 import os
+from importlib.metadata import version
 
 if not getattr(sys, "frozen", False):
     import git
@@ -19,6 +20,7 @@ from TAER_Core.Views import (
     MainMenuBar,
 )
 from logging import StreamHandler
+import TAER_Core
 from TAER_Core.Libs.config import ViewConfig
 import TAER_Add_Ons
 
@@ -100,7 +102,8 @@ class MainView(wx.Frame):
         #     path = os.path.join(os.path.dirname(__file__), "config", "VERSION")
         #     self.__write_version_file(path)
         # return self.__read_version_file(path)
-        pass
+        # return TAER_Core.__version__
+        return version("TAER_Core")
 
     def start_event_loop(self):
         self.app.MainLoop()
