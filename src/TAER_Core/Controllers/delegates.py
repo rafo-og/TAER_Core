@@ -61,6 +61,9 @@ class DelegatesMain:
             if fileDialog.ShowModal() != wx.ID_CANCEL:
                 self.model.binary_file = fileDialog.GetPath()
                 self.model.device.program(self.model.binary_file)
+                # Just read the FPGA registers because the chip register maybe need
+                # clock activation
+                self.model.read_dev_registers()
                 file_history = self.view.menu_bar.menu_device.program_history
                 file_history.AddFileToHistory(self.model.binary_file)
                 file_history.Save(self.view.menu_bar.menu_device.program_history_config)
@@ -74,6 +77,9 @@ class DelegatesMain:
             file_history.AddFileToHistory(bin_path)
             self.model.binary_file = bin_path
             self.model.device.program(bin_path)
+            # Just read the FPGA registers because the chip register maybe need
+            # clock activation
+            self.model.read_dev_registers()
         else:
             self.presenter.logger.error("The file %s doesn't exist.", bin_path)
             file_history.RemoveFileFromHistory(idx)
