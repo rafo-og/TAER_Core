@@ -1,6 +1,6 @@
 [project]
 name = "TAER_Core"
-version = "0.0.1"
+version = "0.0.2"
 description = "Core modules for TAER (Test AER based sensors)."
 authors = [
     {name = "Rafael de la Rosa", email = "rafodelarosa.og@gmail.com"},
