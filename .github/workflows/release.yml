@@ -24,7 +24,7 @@ jobs:
       run: >-
         python3 -m
         pip install
-        cython setuptools build flit
+        cython setuptools build flit wheel
         --user
     - name: Compile module with TAER_Core_Compile
       run: >-
