@@ -5,7 +5,12 @@ on: push
 jobs:
   build:
     name: Build distribution 📦
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        version: [12]
+        os: [ubuntu-latest, windows-latest]
+
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     

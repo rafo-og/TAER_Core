@@ -7,6 +7,7 @@ import flit
 
 PROJECT_NAME = "TAER_Core"
 
+
 def ensure_dependencies():
     try:
         import Cython
@@ -44,9 +45,6 @@ def convert_to_pyd(src_dir, dest_dir):
     # Cleanup
     clean_after()
 
-def clean_before():
-    clean_after()
-    shutil.rmtree("dist", ignore_errors=True)
 
 def clean_after():
     shutil.rmtree("build", ignore_errors=True)
@@ -54,13 +52,10 @@ def clean_after():
     shutil.rmtree(f"{PROJECT_NAME}", ignore_errors=True)
     shutil.rmtree(f"{PROJECT_NAME}.egg-info", ignore_errors=True)
 
+
 def main():
     # Ensure necessary tools are installed within the virtual environment
     ensure_dependencies()
-
-    # Clean previous folders if exists
-    clean_before()
-    shutil.rmtree("dist", ignore_errors=True)
 
     # Convert .py files to .pyd files
     src_dir = "./src/TAER_Core"
