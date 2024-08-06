@@ -56,5 +56,7 @@ setup(
         get_ext_paths(src_dir, EXCLUDE_FILES, EXCLUDE_DIRS),
         compiler_directives={"language_level": "3"},
     ),
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     cmdclass={"build_py": build_py},
 )
