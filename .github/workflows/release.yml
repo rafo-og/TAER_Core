@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         version: [12]
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
 
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
