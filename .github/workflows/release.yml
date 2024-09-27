@@ -33,7 +33,7 @@ jobs:
         python3 -m pip install pyminifier gitpython
     - name: Compile module with build_release script
       run: |
-        ls -la
+        git fetch --tags
         python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
