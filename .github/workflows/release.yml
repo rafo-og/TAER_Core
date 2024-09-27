@@ -20,6 +20,11 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.x"
+    - name: Install pyminifier dependences
+      run: |
+        apt install 2to3
+        apt install python3-lib2to3
+        apt install python3-toolz
     - name: Update setup tools to avoid error with pyminifier
       run: >-
         python3 -m 
