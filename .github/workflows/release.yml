@@ -11,6 +11,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    - run: git fetch --prune --unshallow
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -33,7 +34,6 @@ jobs:
         python3 -m pip install pyminifier gitpython
     - name: Compile module with build_release script
       run: |
-        git fetch --tags
         python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
