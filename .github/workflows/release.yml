@@ -18,7 +18,6 @@ jobs:
     - name: Install pyminifier dependences
       run: |
         sudo apt update
-        sudo apt upgrade -y
         sudo apt install -y 2to3
         sudo apt install -y python3-lib2to3
         sudo apt install -y python3-toolz
@@ -28,6 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install build flit 2to3
+        2to3 --version
         python3 -m pip install pyminifier
     - name: Compile module with build_release script
       run: >-
