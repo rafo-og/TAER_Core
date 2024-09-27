@@ -20,20 +20,22 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.x"
-    - name: Install dependencies
+    - name: Update setup tools to avoid error with pyminifier
       run: >-
         python3 -m 
         pip install 
         --upgrade pip
-         setuptools==57.5.0 
-        &&
+        setuptools==57.5.0
+        --user
+    - name: Install dependencies
+      run: >-
         python3 -m
         pip install
         build flit pyminifier
         --user
-    - name: Compile module with build_release
+    - name: Compile module with TAER_Core_Compile
       run: >-
-        python3 build_release.py
+        python3 TAER_Core_Compile.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
