@@ -31,7 +31,7 @@ def obfuscate(src_dir, dst_dir):
 
             # Obfuscate the file
             os.system(
-                f"pyminifier -o {dst_file_path} --obfuscate --obfuscate-import-methods --obfuscate-builtins {src_file_path}"
+                f"pyminifier -o {dst_file_path} --obfuscate --obfuscate-builtins {src_file_path}"
             )
 
 
