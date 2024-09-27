@@ -92,15 +92,7 @@ class MainView(wx.Frame):
         return tag
 
     def __get_current_version(self):
-        # if getattr(sys, "frozen", False):
-        #     path = os.path.dirname(sys.executable)
-        #     path = os.path.join(path, "config", "VERSION")
-        # else:
-        #     path = os.path.join(os.path.dirname(__file__), "config", "VERSION")
-        #     self.__write_version_file(path)
-        # return self.__read_version_file(path)
-        # return TAER_Core.__version__
-        return version("TAER_Core")
+        return 'v' + version("TAER_Core")
 
     def start_event_loop(self):
         self.app.MainLoop()
