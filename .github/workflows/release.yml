@@ -33,9 +33,9 @@ jobs:
         pip install
         build flit pyminifier
         --user
-    - name: Compile module with TAER_Core_Compile
+    - name: Compile module with build_release script
       run: >-
-        python3 TAER_Core_Compile.py
+        python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
