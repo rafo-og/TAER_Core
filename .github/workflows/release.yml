@@ -32,7 +32,8 @@ jobs:
         python3 -m pip install build flit wheel
         python3 -m pip install pyminifier gitpython
     - name: Compile module with build_release script
-      run: >-
+      run: |
+        ls -la
         python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
