@@ -23,13 +23,13 @@ jobs:
     - name: Update setup tools to avoid error with pyminifier
       run: >-
         python3 -m 
-        pip3 install 
+        pip install 
         --upgrade pip
         setuptools==57.5.0
     - name: Install dependencies
       run: |
-        python3 -m pip3 install build flit
-        python3 -m pip3 install pyminifier
+        python3 -m pip install build flit
+        python3 -m pip install pyminifier
     - name: Compile module with build_release script
       run: >-
         python3 build_release.py
