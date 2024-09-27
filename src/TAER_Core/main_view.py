@@ -1,9 +1,6 @@
 import sys
 import os
 from importlib.metadata import version
-
-if not getattr(sys, "frozen", False):
-    import git
 import wx
 import threading
 import re
