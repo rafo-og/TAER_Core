@@ -26,13 +26,11 @@ jobs:
         pip install 
         --upgrade pip
         setuptools==57.5.0
-        --user
     - name: Install dependencies
       run: >-
         python3 -m
         pip install
         build flit pyminifier
-        --user
     - name: Compile module with build_release script
       run: >-
         python3 build_release.py
