@@ -21,20 +21,12 @@ jobs:
         python -m venv .venv
         source .venv/bin/activate
         python -m pip install --upgrade pip
-    - name: Install pyminifier dependences
-      run: |
-        sudo apt update
-        sudo apt install -y 2to3
-        sudo apt install -y python3-lib2to3
-        sudo apt install -y python3-toolz
     - name: Install dependencies
       run: |
-        python3 -m pip install "setuptools<58.0.0"
-        python3 -m pip install build flit wheel
-        python3 -m pip install pyminifier gitpython
+        python3 -m pip install build flit wheel 
+        python3 -m pip install pyc_wheel gitpython
     - name: Compile module with build_release script
-      run: |
-        python3 build_release.py
+      run: python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
