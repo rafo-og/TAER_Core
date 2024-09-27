@@ -1,11 +1,12 @@
 [project]
 name = "TAER_Core"
-version = "0.0.2"
-description = "Core modules for TAER (Test AER based sensors)."
+description = "Core module for TAER (Test AER based sensors)."
 authors = [
     {name = "Rafael de la Rosa", email = "rafodelarosa.og@gmail.com"},
     {name = "Ruben Gomez Merchan", email = "rgmerchan@us.es"},
 ]
+readme = "README.md"
+license = { file = "LICENSE" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -15,14 +16,21 @@ requires-python = ">=3.10.5"
 dependencies = [
     "numpy==1.24.0",
     "opencv-python",
-    "GitPython==3.1.43",
     "matplotlib==3.9.1",
     "PyYAML==6.0.1",
     "wxPython==4.2.0",
     "pre-commit"
 ]
-
+dynamic = ["version"]
 
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "TAER_Core.__version__"}
+
+# Specify which packages to include
+[tool.setuptools.packages.find]
+where = ["tmp/src_obf"]

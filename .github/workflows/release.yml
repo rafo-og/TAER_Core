@@ -22,13 +22,18 @@ jobs:
         python-version: "3.x"
     - name: Install dependencies
       run: >-
+        python3 -m 
+        pip install 
+        --upgrade pip
+         setuptools==57.5.0 
+        &&
         python3 -m
         pip install
-        cython setuptools build flit wheel
+        build flit pyminifier
         --user
-    - name: Compile module with TAER_Core_Compile
+    - name: Compile module with build_release
       run: >-
-        python3 TAER_Core_Compile.py
+        python3 build_release.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
