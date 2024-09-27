@@ -61,6 +61,7 @@ def get_git_version(repopath):
 if __name__ == "__main__":
     cwd = os.path.dirname(os.path.abspath(__file__))
     version = get_git_version(cwd)
+    print(f"Compiling version v{version}...")
     filepath = os.path.join(cwd, "src/TAER_Core/__init__.py")
     update_version(filepath, version)
     src_folder = os.path.join(cwd, "src")
