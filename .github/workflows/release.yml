@@ -17,6 +17,8 @@ jobs:
         python-version: "3.x"
     - name: Install pyminifier dependences
       run: |
+        sudo apt update
+        sudo apt upgrade -y
         sudo apt install -y 2to3
         sudo apt install -y python3-lib2to3
         sudo apt install -y python3-toolz
