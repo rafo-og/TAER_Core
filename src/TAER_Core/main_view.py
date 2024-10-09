@@ -1,4 +1,5 @@
 import sys
+import ctypes
 import os
 from importlib.metadata import version
 import wx
@@ -32,10 +33,15 @@ class MainView(wx.Frame):
         self.app = wx.App()
         tag = self.__get_current_version()
         wx.Frame.__init__(self, None, title=f"pyAER {tag}")
+        self.set_icon()
 
     def config(self):
         self.config_data = ViewConfig()
-        self.SetMinSize(wx.Size(self.config_data.main_panel_size.w, self.config_data.main_panel_size.h))
+        self.SetMinSize(
+            wx.Size(
+                self.config_data.main_panel_size.w, self.config_data.main_panel_size.h
+            )
+        )
         self.__create_layout()
         self.__init_logic()
 
@@ -60,7 +66,11 @@ class MainView(wx.Frame):
         self.main_box.Add(self.hbox, 2, wx.EXPAND)
         self.main_box.Add(self.logging_panel, 1, wx.EXPAND)
 
-        self.SetSize(wx.Size(self.config_data.main_panel_size.w, self.config_data.main_panel_size.h))
+        self.SetSize(
+            wx.Size(
+                self.config_data.main_panel_size.w, self.config_data.main_panel_size.h
+            )
+        )
         self.SetSizer(self.main_box)
         self.Layout()
 
@@ -92,7 +102,7 @@ class MainView(wx.Frame):
         return tag
 
     def __get_current_version(self):
-        return 'v' + version("TAER_Core")
+        return "v" + version("TAER_Core")
 
     def start_event_loop(self):
         self.app.MainLoop()
@@ -123,7 +133,9 @@ class MainView(wx.Frame):
         if os.path.exists(app_log_filepath):
             log_filepath = app_log_filepath
         else:
-            log_filepath = os.path.join(os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf")
+            log_filepath = os.path.join(
+                os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf"
+            )
 
         with open(log_filepath, "r") as f:
             lines = f.read()
@@ -157,6 +169,16 @@ class MainView(wx.Frame):
 
     def set_mode(self, mode):
         self.panel_control.set_selected_mode(mode)
+
+    def set_icon(self, frame: wx.Frame | None = None):
+        # Set frame icon
+        myappid = "TAER-App.TAER-Core.icon.string"  # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        icon_path = os.path.join(os.path.dirname(__file__), "Data/taer_small_icon.png")
+        if frame is None:
+            self.SetIcon(wx.Icon(icon_path))
+        else:
+            frame.SetIcon(wx.Icon(icon_path))
 
     @property
     def image(self):
@@ -209,7 +231,9 @@ class ControlPanel(wx.Panel):
         self.control_grid = wx.GridSizer(2, 0, 0)
         self.control_box.Add(self.control_grid, 0, wx.ALL, 5)
         self.place_buttons()
-        self.vbox.Add(self.control_box, 0, wx.EXPAND | wx.BOTTOM | wx.LEFT | wx.RIGHT, 20)
+        self.vbox.Add(
+            self.control_box, 0, wx.EXPAND | wx.BOTTOM | wx.LEFT | wx.RIGHT, 20
+        )
 
         self.SetSizerAndFit(self.vbox)
         self.Layout()
@@ -258,8 +282,12 @@ class ImagePanel(wx.Panel):
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.hsizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.hsizer.Add(self.img_ctrl, 1, wx.SHAPED | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 10)
-        self.vsizer.Add(self.hsizer, 1, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 10)
+        self.hsizer.Add(
+            self.img_ctrl, 1, wx.SHAPED | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 10
+        )
+        self.vsizer.Add(
+            self.hsizer, 1, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 10
+        )
 
         self.SetSizer(self.vsizer)
         self.Layout()
@@ -283,7 +311,13 @@ class LogPanel(wx.Panel):
 
         self.sizer = wx.BoxSizer()
 
-        txt_style = wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH | wx.TE_WORDWRAP | wx.TE_NOHIDESEL
+        txt_style = (
+            wx.TE_MULTILINE
+            | wx.TE_READONLY
+            | wx.TE_RICH
+            | wx.TE_WORDWRAP
+            | wx.TE_NOHIDESEL
+        )
         self.logging_box = wx.TextCtrl(self, style=txt_style)
 
         font1 = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, False, "Consolas")

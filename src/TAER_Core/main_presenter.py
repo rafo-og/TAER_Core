@@ -172,6 +172,7 @@ class MainPresenter:
 
     def __show_select_config_dialog(self) -> str:
         with SelectConfigDialog(self.view) as dlg:
+            self.view.set_icon(dlg)
             if dlg.ShowModal() == wx.ID_OK:
                 return dlg.get_choice_selected()
             else:
