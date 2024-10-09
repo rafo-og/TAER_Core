@@ -1,4 +1,4 @@
-import sys
+import platform
 import ctypes
 import os
 from importlib.metadata import version
@@ -172,8 +172,9 @@ class MainView(wx.Frame):
 
     def set_icon(self, frame: wx.Frame | None = None):
         # Set frame icon
-        myappid = "TAER-App.TAER-Core.icon.string"  # arbitrary string
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        if platform.system() == "Windows":
+            myappid = "TAER-App.TAER-Core.icon.string"  # arbitrary string
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
         icon_path = os.path.join(os.path.dirname(__file__), "Data/taer_small_icon.png")
         if frame is None:
             self.SetIcon(wx.Icon(icon_path))
