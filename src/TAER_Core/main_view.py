@@ -20,7 +20,7 @@ from TAER_Core.Views import (
 from logging import StreamHandler
 import TAER_Core
 from TAER_Core.Libs.config import ViewConfig
-import TAER_Add_Ons
+import TAER_App
 
 
 class MainView(wx.Frame):
@@ -134,7 +134,7 @@ class MainView(wx.Frame):
             log_filepath = app_log_filepath
         else:
             log_filepath = os.path.join(
-                os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf"
+                os.path.dirname(TAER_App.__file__), "config", "loggers.conf"
             )
 
         with open(log_filepath, "r") as f:

@@ -1,11 +1,11 @@
 import wx
 import os
 import sys
-import TAER_Add_Ons
+import TAER_App
 
 
 class SelectConfigDialog(wx.Dialog):
-    CONFIGS_PATH = os.path.join(os.path.dirname(TAER_Add_Ons.__file__), ("chip_configs"))
+    CONFIGS_PATH = os.path.join(os.path.dirname(TAER_App.__file__), ("chip_configs"))
 
     def __init__(self, parent):
         dlg_style = (wx.CAPTION | wx.STAY_ON_TOP) ^ wx.RESIZE_BORDER

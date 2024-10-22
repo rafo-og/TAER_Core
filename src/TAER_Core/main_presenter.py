@@ -13,11 +13,11 @@ from TAER_Core.main_view import MainView
 from TAER_Core.Views import SelectConfigDialog
 from TAER_Core.Controllers import *
 from TAER_Core.Libs import Config
-import TAER_Add_Ons
-from TAER_Add_Ons.Tools import *
-from TAER_Add_Ons.Tools.tool_base import ToolBase
-from TAER_Add_Ons.Initializers import *
-from TAER_Add_Ons.Initializers.initializer_base import InitializerBase
+import TAER_App
+from TAER_App.Tools import *
+from TAER_App.Tools.tool_base import ToolBase
+from TAER_App.Initializers import *
+from TAER_App.Initializers.initializer_base import InitializerBase
 
 
 class MainPresenter:
@@ -63,7 +63,7 @@ class MainPresenter:
             log_filepath = app_log_filepath
         else:
             log_filepath = os.path.join(
-                os.path.dirname(TAER_Add_Ons.__file__), "config", "loggers.conf"
+                os.path.dirname(TAER_App.__file__), "config", "loggers.conf"
             )
         # Create logs folder if it isn't exist
         log_folder = os.path.join(os.getcwd(), "logs")
