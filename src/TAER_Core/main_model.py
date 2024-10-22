@@ -220,7 +220,7 @@ class Histogram:
 
 
 class MainModel:
-    """An object where the pyAER data is stored."""
+    """An object where the TAER data is stored."""
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)

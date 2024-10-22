@@ -32,7 +32,7 @@ class MainView(wx.Frame):
         """Create the wx.App and then we put together all the widgets"""
         self.app = wx.App()
         tag = self.__get_current_version()
-        wx.Frame.__init__(self, None, title=f"pyAER {tag}")
+        wx.Frame.__init__(self, None, title=f"TAER {tag}")
         self.set_icon()
 
     def config(self):

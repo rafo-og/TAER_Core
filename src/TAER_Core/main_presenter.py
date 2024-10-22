@@ -179,7 +179,7 @@ class MainPresenter:
                 return ""
 
     def __print_welcome_message(self):
-        self.logger.info("pyAER")
+        self.logger.info("TAER")
         self.logger.info("Python %s", sys.version)
         self.logger.info("wxPython %s", wx.version())
 

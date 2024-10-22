@@ -56,8 +56,8 @@ class MainDeviceMenu(wx.Menu):
         self.program_history = wx.FileHistory()
         self.program_history.SetMenuPathStyle(wx.FH_PATH_SHOW_ALWAYS)
         self.program_history_config = wx.Config(
-            "pyAER",
-            localFilename="./tmp/.pyAER_recent_files",
+            "TAER",
+            localFilename="./tmp/.TAER_recent_files",
             style=wx.CONFIG_USE_LOCAL_FILE | wx.CONFIG_USE_SUBDIR | wx.CONFIG_USE_RELATIVE_PATH,
         )
         self.program_history.Load(self.program_history_config)
