@@ -201,6 +201,10 @@ class MainPresenter:
         ):
             self.view.set_menus_state(self.model.device.is_connected)
             # self.view.set_menus_state(True)
+            if not self.model.adc_db.get_item_num():
+                self.view.set_menus_state(False, id="ADCs")
+            if not self.model.dacs_db.get_item_num():
+                self.view.set_menus_state(False, id="DACs")
 
         view = self.view.edit_register_device_frame
         if id == "init" or (id == "" and view.IsShown()) or view.GetId() == id:

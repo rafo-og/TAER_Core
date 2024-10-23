@@ -88,19 +88,6 @@ class MainView(wx.Frame):
     def __init_logic(self):
         self.imgLock = threading.Lock()
 
-    def __write_version_file(self, filepath):
-        repo = git.Repo(os.path.dirname(__file__))
-        tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-        tag = str(tags[-1]) + "\n"
-        with open(filepath, "w") as f:
-            f.write(tag)
-
-    def __read_version_file(self, filepath):
-        tag = ""
-        with open(filepath, "r") as f:
-            tag = f.readline()
-        return tag
-
     def __get_current_version(self):
         return "v" + version("TAER_Core")
 
@@ -144,15 +131,18 @@ class MainView(wx.Frame):
             match = pattern.search(lines)
             return match.groups()[0].split(",")
 
-    def set_menus_state(self, state):
+    def set_menus_state(self, state, id=None):
         for submenu in self.menu_bar.menu_device.GetMenuItems():
-            submenu.Enable(state)
+            if id is None or submenu.ItemLabelText == id:
+                submenu.Enable(state)
 
         for submenu in self.menu_bar.menu_edit.GetMenuItems():
-            submenu.Enable(state)
+            if id is None or submenu.ItemLabelText == id:
+                submenu.Enable(state)
 
         for submenu in self.menu_bar.menu_tools.GetMenuItems():
-            submenu.Enable(state)
+            if id is None or submenu.ItemLabelText == id:
+                submenu.Enable(state)
 
         self.panel_control.Enable(state)
 

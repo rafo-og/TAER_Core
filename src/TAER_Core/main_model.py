@@ -103,6 +103,9 @@ class DbBase:
     def get_item_value_list(self) -> dict:
         return {key: item.value for key, item in self.d_item.items()}
 
+    def get_item_num(self) -> int:
+        return len(self.d_item)
+
 
 class ChipRegister(ItemBase):
     def __init__(self, label, address, defaultValue=0, signals=None) -> None:
@@ -266,19 +269,24 @@ class MainModel:
     def __config_dac_db(self):
         """Configure the DAC devices from the configuration file"""
         self.dacs_db = DbBase()
-        dacs = self.config.dacs
-        for dac in dacs:
-            new_dac = Dac(dac[0], int(dac[1], 0), int(dac[2], 0), int(dac[3], 0))
-            self.dacs_db.add(new_dac)
+        if hasattr(self.config, 'dacs'):
+            dacs = self.config.dacs
+            for dac in dacs:
+                new_dac = Dac(dac[0], int(dac[1], 0), int(dac[2], 0), int(dac[3], 0))
+                self.dacs_db.add(new_dac)
 
     def __config_adc_db(self):
         """Configure the ADC devices from the configuration file"""
         self.adc_db = DbBase()
-        self.adc_tmeas = self.config.adc_tmeas
-        adcs = self.config.adcs
-        for adc in adcs:
-            new_adc = Adc(adc[4], int(adc[0], 0), int(adc[1], 0), float(adc[2]), float(adc[3]))
-            self.adc_db.add(new_adc)
+        if hasattr(self.config, 'adc_tmeas'):
+            self.adc_tmeas = self.config.adc_tmeas
+        else:
+            self.adc_tmeas = 1
+        if hasattr(self.config, 'adcs'):
+            adcs = self.config.adcs
+            for adc in adcs:
+                new_adc = Adc(adc[4], int(adc[0], 0), int(adc[1], 0), float(adc[2]), float(adc[3]))
+                self.adc_db.add(new_adc)
 
     def __config_default_values(self):
         self.main_img_data = np.zeros((self.config.img.w, self.config.img.h), np.uint16)
