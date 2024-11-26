@@ -289,7 +289,7 @@ class MainPresenter:
     def stop_main_img_thread(self):
         self.stop_cature_flag = True
         self.view.set_capture_mode(self.stop_cature_flag)
-        if self.img_thread_handler != None:
+        if self.img_thread_handler is not None:
             if self.img_thread_handler.is_alive():
                 self.img_thread_handler.join()
 
@@ -348,6 +348,7 @@ class MainPresenter:
             flags = (
                 not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
             )
+        self.logger.info("ENDS.")
         self.model.device.actions.stop_capture()
         self.model.device.actions.reset_fifo()
         self.model.device.actions.reset_ram()
