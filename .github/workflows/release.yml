@@ -12,23 +12,28 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: git fetch --prune --unshallow
+
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10.5"
+    
     - name: Create a virtual environment
       run: |
         python -m venv .venv
         source .venv/bin/activate
         python -m pip install --upgrade pip
+    
     - name: Install dependencies
       run: |
         python3 -m pip install build flit wheel 
         python3 -m pip install pyc_wheel gitpython
+    
     - name: Compile module with build_release script
       run: python3 build_release.py
+    
     - name: Store the distribution packages
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
@@ -46,7 +51,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
@@ -67,7 +72,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
