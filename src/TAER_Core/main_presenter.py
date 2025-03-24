@@ -22,17 +22,31 @@ from TAER_App.Initializers.initializer_base import InitializerBase
 
 class MainPresenter:
     """
-    This object describes the application behaviour
+    This object describes the application behaviour.
     It also creates a "higher level language" in which you express what happens
     inside your application.
     """
 
     def __init__(self, model: MainModel, view: MainView, interactor: MainInteractor):
+        """
+        Initialize the MainPresenter with the given model, view, and interactor.
+
+        Args:
+            model (MainModel): The main model of the application.
+            view (MainView): The main view of the application.
+            interactor (MainInteractor): The main interactor of the application.
+        """
         self.model = model
         self.view = view
         self.interactor = interactor
 
     def __install_interactors(self, interactor):
+        """
+        Install interactors for various views.
+
+        Args:
+            interactor (MainInteractor): The main interactor of the application.
+        """
         interactor.install(self, self.view)
         interactor = InteractorEditMenuBase()
         view = self.view.edit_register_device_frame
@@ -45,7 +59,9 @@ class MainPresenter:
         interactor.install(self.delegates_edit_dac, view)
 
     def __config(self):
-        """Configure all the libraries and stuff"""
+        """
+        Configure all the libraries and components.
+        """
         self.__config_logging()
         self.__config_logic()
         self.__config_model()
@@ -56,7 +72,7 @@ class MainPresenter:
 
     def __config_logging(self):
         """
-        Configure the logging module
+        Configure the logging module.
         """
         app_log_filepath = os.path.join(os.getcwd(), "config", "loggers.conf")
         if os.path.exists(app_log_filepath):
@@ -74,7 +90,9 @@ class MainPresenter:
         self.logger = logging.getLogger(__name__)
 
     def __config_logic(self):
-        """Initialize the application logic objects as threads, mutexes or semaphores"""
+        """
+        Initialize the application logic objects such as threads, mutexes, or semaphores.
+        """
         self.stop_flag = True
         self.stop_cature_flag = True
         self.one_shot_flag = False
@@ -82,16 +100,24 @@ class MainPresenter:
         self.adc_thread_handler = None
 
     def __config_model(self):
+        """
+        Configure the model.
+        """
         self.model.config()
 
     def __config_view(self):
-        """Upon first start, load the default values and update the view."""
+        """
+        Load the default values and update the view upon first start.
+        """
         self.view.config()
         self.view.init_log_box()
         self.view.menu_bar.configure_tools(self.tools.keys())
         self.__update_view_on_gui_thread("init")
 
     def __config_delegates(self):
+        """
+        Configure the delegates for various views and register callbacks.
+        """
         view = self.view
         self.delegates_main = DelegatesMain(self, view, self.model)
         self.delegates_edit_register_device = DelegatesEditMenuBase(
@@ -109,6 +135,9 @@ class MainPresenter:
         self.model.register_on_model_update_cb(self.update_view)
 
     def __config_tools(self):
+        """
+        Configure the tools for the presenter.
+        """
         self.tools = {}
         subclasses = ToolBase.__subclasses__()
         for subclass in subclasses:
@@ -119,6 +148,9 @@ class MainPresenter:
                 new_tool = None
 
     def __config_initializer(self):
+        """
+        Configure the initializer based on the model's chip name.
+        """
         initializer_name = self.model.config.chip_name
         subclasses = InitializerBase.__subclasses__()
         self.initializer = None
@@ -139,6 +171,9 @@ class MainPresenter:
             self.initializer = InitializerBase(self.model)
 
     def start(self):
+        """
+        Start the application.
+        """
         config_path = self.__show_select_config_dialog()
 
         if config_path != "":
@@ -161,16 +196,28 @@ class MainPresenter:
             self.view.close()
 
     def close(self):
+        """
+        Close the application.
+        """
         self.initializer.on_close_app()
         self.stop()
 
     def stop(self):
+        """
+        Stop the application.
+        """
         self.model.device.stop()
         self.stop_main_img_thread()
         self.stop_adc()
         self.stop_flag = True
 
     def __show_select_config_dialog(self) -> str:
+        """
+        Show the configuration selection dialog.
+
+        Returns:
+            str: The selected configuration path.
+        """
         with SelectConfigDialog(self.view) as dlg:
             self.view.set_icon(dlg)
             if dlg.ShowModal() == wx.ID_OK:
@@ -179,21 +226,42 @@ class MainPresenter:
                 return ""
 
     def __print_welcome_message(self):
+        """
+        Print the welcome message to the logger.
+        """
         self.logger.info("TAER")
         self.logger.info("Python %s", sys.version)
         self.logger.info("wxPython %s", wx.version())
 
     def update_image(self):
+        """
+        Update the image on the GUI thread.
+        """
         wx.CallAfter(self.__update_image_on_gui_thread)
 
     def __update_image_on_gui_thread(self):
+        """
+        Update the image on the GUI thread.
+        """
         self.view.image = self.model.main_img
         self.view.image_histogram_frame.update_histogram(self.model.img_histogram)
 
     def update_view(self, id=""):
+        """
+        Update the view on the GUI thread.
+
+        Args:
+            id (str): The ID of the view to update.
+        """
         wx.CallAfter(self.__update_view_on_gui_thread, id)
 
     def __update_view_on_gui_thread(self, id):
+        """
+        Update the view on the GUI thread.
+
+        Args:
+            id (str): The ID of the view to update.
+        """
         if (
             id == "init"
             or (id == "" and self.view.IsShown())
@@ -235,6 +303,12 @@ class MainPresenter:
                 tool.update_view()
 
     def update_model(self, id):
+        """
+        Update the model based on the view's ID.
+
+        Args:
+            id (str): The ID of the view to update.
+        """
         if id == self.view.edit_register_device_frame.GetId():
             self.logger.info("Update registers")
             view = self.view.edit_register_device_frame
@@ -269,24 +343,36 @@ class MainPresenter:
         self.logger.info("Updated.")
 
     def capture(self):
+        """
+        Capture an image.
+        """
         if self.img_thread_handler is None:
             self.one_shot_flag = True
             self.img_thread_handler = threading.Thread(target=self.__img_thread)
             self.img_thread_handler.start()
 
     def toggle_main_img_thread(self):
+        """
+        Toggle the main image thread.
+        """
         if self.stop_cature_flag:
             self.start_main_img_thread()
         else:
             self.stop_main_img_thread()
 
     def start_main_img_thread(self):
+        """
+        Start the main image thread.
+        """
         self.stop_cature_flag = False
         self.view.set_capture_mode(self.stop_cature_flag)
         self.img_thread_handler = threading.Thread(target=self.__img_thread)
         self.img_thread_handler.start()
 
     def stop_main_img_thread(self):
+        """
+        Stop the main image thread.
+        """
         self.stop_cature_flag = True
         self.view.set_capture_mode(self.stop_cature_flag)
         if self.img_thread_handler is not None:
@@ -294,6 +380,9 @@ class MainPresenter:
                 self.img_thread_handler.join()
 
     def __img_thread(self):
+        """
+        The main image thread function.
+        """
         flags = not self.stop_cature_flag or self.one_shot_flag and not self.stop_flag
         self.initializer.on_init_capture()
         if self.model.FR_raw_mode_en:
@@ -308,6 +397,12 @@ class MainPresenter:
         self.logger.debug("Image thread finished")
 
     def __continuous_FR_raw_loop(self, flags):
+        """
+        Continuous FR raw loop for capturing images.
+
+        Args:
+            flags (bool): The flags to control the loop.
+        """
         self.initializer.on_before_capture()
         self.model.device.actions.events_done()
         self.model.device.actions.start_capture()
@@ -355,6 +450,12 @@ class MainPresenter:
         self.model.device.actions.reset_aer()
 
     def __continuous_TFS_raw_loop(self, flags):
+        """
+        Continuous TFS raw loop for capturing images.
+
+        Args:
+            flags (bool): The flags to control the loop.
+        """
         self.initializer.on_before_capture()
         self.model.device.actions.events_done()
         while flags:
@@ -401,6 +502,12 @@ class MainPresenter:
         self.model.device.actions.reset_aer()
 
     def __standard_loop(self, flags):
+        """
+        Standard loop for capturing images.
+
+        Args:
+            flags (bool): The flags to control the loop.
+        """
         nsamples = self.model.dev_reg_db.get_item_by_address(0x06).value
         if nsamples == 0:
             nsamples = 1
@@ -434,6 +541,9 @@ class MainPresenter:
             self.logger.debug(f"Time: {(time.time()-t1)*1000} ms")
 
     def run_adc(self):
+        """
+        Run the ADC thread.
+        """
         if self.adc_thread_handler is None:
             self.flag_adc_run = True
             self.adc_thread_handler = threading.Thread(target=self.__adc_thread)
@@ -443,6 +553,9 @@ class MainPresenter:
             channel.reset_data()
 
     def stop_adc(self):
+        """
+        Stop the ADC thread.
+        """
         self.flag_adc_run = False
         if self.adc_thread_handler is not None:
             if self.adc_thread_handler.is_alive():
@@ -450,10 +563,26 @@ class MainPresenter:
             self.adc_thread_handler = None
 
     def process_img(self):
+        """
+        Process the image.
+        """
         if self.view.image_histogram_frame.IsShown():
             self.__process_img_histogram()
 
     def wait_until(self, somepredicate, timeout, period=0.25, *args, **kwargs):
+        """
+        Wait until a condition is met or timeout occurs.
+
+        Args:
+            somepredicate (callable): The condition to wait for.
+            timeout (float): The timeout period.
+            period (float): The period to check the condition.
+            *args: Additional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            bool: True if the condition is met, False otherwise.
+        """
         mustend = time.time() + timeout
         while time.time() < mustend:
             if somepredicate(*args, **kwargs):
@@ -462,6 +591,9 @@ class MainPresenter:
         return False
 
     def send_serial_data(self):
+        """
+        Send serial data.
+        """
         raw_data = (
             self.view.serial_control_frame.panel_serial_control.serial_tx_box.GetValue()
         )
@@ -482,18 +614,33 @@ class MainPresenter:
             )
 
     def update_adc_ts(self):
+        """
+        Update the ADC timestamp.
+        """
         self.model.adc_tmeas = float(
             self.view.adc_control_frame.panel_menu.sampletime_textbox.GetValue()
         )
 
     def update_adc_panels(self):
+        """
+        Update the ADC panels.
+        """
         adcs = self.model.adc_db
         self.view.adc_control_frame.update_panels(adcs.get_item_list())
 
     def set_mode(self, mode):
+        """
+        Set the mode of the model.
+
+        Args:
+            mode (str): The mode to set.
+        """
         self.model.set_mode(mode)
 
     def save_preset(self):
+        """
+        Save the current preset.
+        """
         to_save = self.model.get_preset()
         with wx.FileDialog(
             self.view,
@@ -509,6 +656,9 @@ class MainPresenter:
                     pickle.dump(to_save, fp, pickle.HIGHEST_PROTOCOL)
 
     def load_preset(self):
+        """
+        Load a preset.
+        """
         to_load = None
         with wx.FileDialog(
             self.view,
@@ -528,6 +678,9 @@ class MainPresenter:
     # Processing routines
     #
     def __process_img_histogram(self):
+        """
+        Process the image histogram.
+        """
         data = self.model.main_img_data.flatten()
         hist_settings = self.model.img_histogram
         bins = np.linspace(hist_settings.min, hist_settings.max, hist_settings.bins)
@@ -535,6 +688,9 @@ class MainPresenter:
         self.model.img_histogram.value = hist
 
     def __adc_thread(self):
+        """
+        The ADC thread function.
+        """
         t0 = time.time()
         id = self.view.adc_control_frame.GetId()
         while self.flag_adc_run:
