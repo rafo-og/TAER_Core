@@ -361,10 +361,10 @@ class CustomConsoleHandler(StreamHandler):
         """
         return {
             "DEBUG": wx.TextAttr(self.color_default),
-            "INFO": wx.TextAttr(wx.Colour(82, 190, 128)),
-            "WARNING": wx.TextAttr(wx.Colour(244, 208, 63)),
-            "ERROR": wx.TextAttr(wx.Colour(236, 112, 99)),
-            "CRITICAL": wx.TextAttr(wx.Colour(176, 58, 46)),
+            "INFO": wx.TextAttr(wx.Colour(0, 87, 233)),
+            "WARNING": wx.TextAttr(wx.Colour(227, 177, 0)),
+            "ERROR": wx.TextAttr(wx.Colour(225, 24, 69)),
+            "CRITICAL": wx.TextAttr(wx.Colour(205, 4, 49)),
         }[x]
 
 
