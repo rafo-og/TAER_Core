@@ -398,33 +398,19 @@ class DeviceActions:
         self.__update_wires__()
 
     def set_aux_signal(self, signal, value):
-        if signal == 0:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX0)
-        elif signal == 1:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX1)
-        elif signal == 2:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX2)
-        elif signal == 3:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX3)
-        elif signal == 4:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX4)
-        elif signal == 5:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_0.AUX5)
+        if 0 <= signal <= 5:
+            wire = getattr(WIRE_IN_0, f"AUX{signal}")
+            self.__set_wire__(self.links.win_pcb, value, wire)
+        else:
+            self.logger.error(f"Invalid switch_bit: {signal}. Must be between 0 and 5.")
         self.__update_wires__()
 
     def set_pcb_switch(self, switch_bit, value):
-        if switch_bit == 0:
-            self.__set_wire__(self.links.win_pcb, value, WIRE_IN_PCBSWITCHES.BIT0)
-        elif switch_bit == 1:
-            self.__set_wire__(self.links.win_pcb, value, WIRE_IN_PCBSWITCHES.BIT1)
-        elif switch_bit == 2:
-            self.__set_wire__(self.links.win_pcb, value, WIRE_IN_PCBSWITCHES.BIT2)
-        elif switch_bit == 3:
-            self.__set_wire__(self.links.win_pcb, value, WIRE_IN_PCBSWITCHES.BIT3)
-        elif switch_bit == 4:
-            self.__set_wire__(self.links.win_pcb, value, WIRE_IN_PCBSWITCHES.BIT4)
-        elif switch_bit == 5:
-            self.__set_wire__(self.links.win0, value, WIRE_IN_PCBSWITCHES.BIT5)
+        if 0 <= switch_bit <= 31:
+            wire = getattr(WIRE_IN_PCBSWITCHES, f"BIT{switch_bit}")
+            self.__set_wire__(self.links.win_pcb, value, wire)
+        else:
+            self.logger.error(f"Invalid switch_bit: {switch_bit}. Must be between 0 and 31.")
         self.__update_wires__()
 
     def get_evt_count(self) -> int:
@@ -654,6 +640,31 @@ class WIRE_IN_PCBSWITCHES:
     BIT4 = LINK_VALUE_DEF(4)
     BIT5 = LINK_VALUE_DEF(5)
     BIT6 = LINK_VALUE_DEF(6)
+    BIT7 = LINK_VALUE_DEF(7)
+    BIT8 = LINK_VALUE_DEF(8)
+    BIT9 = LINK_VALUE_DEF(9)
+    BIT10 = LINK_VALUE_DEF(10)
+    BIT11 = LINK_VALUE_DEF(11)
+    BIT12 = LINK_VALUE_DEF(12)
+    BIT13 = LINK_VALUE_DEF(13)
+    BIT14 = LINK_VALUE_DEF(14)
+    BIT15 = LINK_VALUE_DEF(15)
+    BIT16 = LINK_VALUE_DEF(16)
+    BIT17 = LINK_VALUE_DEF(17)
+    BIT18 = LINK_VALUE_DEF(18)
+    BIT19 = LINK_VALUE_DEF(19)
+    BIT20 = LINK_VALUE_DEF(20)
+    BIT21 = LINK_VALUE_DEF(21)
+    BIT22 = LINK_VALUE_DEF(22)
+    BIT23 = LINK_VALUE_DEF(23)
+    BIT24 = LINK_VALUE_DEF(24)
+    BIT25 = LINK_VALUE_DEF(25)
+    BIT26 = LINK_VALUE_DEF(26)
+    BIT27 = LINK_VALUE_DEF(27)
+    BIT28 = LINK_VALUE_DEF(28)
+    BIT29 = LINK_VALUE_DEF(29)
+    BIT30 = LINK_VALUE_DEF(30)
+    BIT31 = LINK_VALUE_DEF(31)
 
 
 class WIRE_SPI:
