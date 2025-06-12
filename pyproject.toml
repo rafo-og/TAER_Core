@@ -2,7 +2,7 @@
 name = "TAER_Core"
 description = "Core module for TAER (Test AER based sensors)."
 authors = [
-    {name = "Rafael de la Rosa", email = "rafodelarosa.og@gmail.com"},
+    {name = "Rafael de la Rosa", email = "rdvidal@us.es"},
     {name = "Ruben Gomez Merchan", email = "rgmerchan@us.es"},
 ]
 readme = "README.md"
