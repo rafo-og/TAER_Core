@@ -35,8 +35,7 @@ This code is essential for enabling the TAER platform to communicate with and co
 
 This project uses GitHub Actions to automate the release process. To create a new release, follow these steps:
 
-1. **Commit and push your changes to the main branch.**  
-   Example command lines:
+1. **Commit and push your changes to the main branch.**
    ```sh
    git add .
    git commit -m "Describe your changes"
@@ -47,8 +46,7 @@ This project uses GitHub Actions to automate the release process. To create a ne
    Go to the "Actions" tab in your GitHub repository and verify that the build workflow is running and finishes without errors.  
    If there are errors, review the output log, fix the issues in your code, and repeat step 1.
 
-3. **Create a new tag for the new version and push the tag.**  
-   Example command lines:
+3. **Create a new tag for the new version and push the tag.**
    ```sh
    git tag vX.Y.Z   # Replace X.Y.Z with your new version number
    git push origin vX.Y.Z
