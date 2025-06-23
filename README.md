@@ -9,9 +9,9 @@ TAER-Core is the foundational backend module for the TAER App, providing the ess
 - Intended to be extended or integrated by developers building on the TAER platform.
 
 **Module structure:**
-- **Model:** Handles data management and business logic ([main_model.py](src\TAER_Core\main_model.py))
-- **Controller:** Manages application flow and user interactions ([main_presenter.py](src\TAER_Core\main_presenter.py), [delegates.py](src\TAER_Core\Controllers\delegates.py), [interactors.py](src\TAER_Core\Controllers\interactors.py))
-- **View:** Responsible for the graphical user interface ([main_view.py](src\TAER_Core\main_view.py), [Views](src\TAER_Core\Views))
+- **Model:** Handles data management and business logic ([main_model.py](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/main_model.py))
+- **Controller:** Manages application flow and user interactions ([main_presenter.py](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/main_presenter.py), [delegates.py](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/Controllers/delegates.py), [interactors.py](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/Controllers/interactors.py))
+- **View:** Responsible for the graphical user interface ([main_view.py](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/main_view.py), [Views](https://github.com/rafo-og/TAER_Core/blob/main/src/TAER_Core/Views))
 
 This module is not intended for direct use by end users, but rather as a core library for developers extending or maintaining the TAER App.
 
