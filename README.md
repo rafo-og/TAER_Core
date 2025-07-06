@@ -31,6 +31,55 @@ The main classes in this file (`Device`, `DeviceInfo`, `DeviceActions`, etc.) en
 
 This code is essential for enabling the TAER platform to communicate with and control AER-based sensor hardware via the FPGA.
 
+## Deploying new features
+
+To add new features to the TAER-Core module, follow these steps:
+
+1. **Set up your development environment:**
+   - Follow the installation instructions for the TAER App as detailed in its repository: [TAER_App](https://github.com/rafo-og/TAER_App).
+
+2. **Clone the TAER-Core repository:**
+   ```sh
+   git clone https://github.com/rafo-og/TAER_Core.git
+   cd TAER_Core
+   ```
+
+3. **Create a new branch for your feature:**
+   ```sh
+   git checkout -b feature/your-feature-name
+   ```
+
+4. **Replace the TAER-Core in TAER-App with your local version:**
+   - From the TAER App virtual environment, run:
+     ```sh
+     pip install -e <path/to/cloned/TAER-Core/folder>
+     ```
+   - At this point, all changes made in TAER-Core will be effective when you launch the TAER App.
+
+5. **Implement your changes:**
+   - Add or modify code in the appropriate files.
+   - Ensure your code follows the project’s style and guidelines.
+
+6. **Test your changes:**
+   - Run the TAER App and verify your new feature works as expected.
+   - Add or update unit tests if applicable.
+
+7. **Commit and push your changes:**
+   ```sh
+   git add .
+   git commit -m "Add new feature: your feature description"
+   git push origin feature/your-feature-name
+   ```
+
+8. **Open a pull request:**
+   - Go to the GitHub repository and open a pull request from your branch to the `main` branch.
+   - Fill out the pull request template and provide a clear description of your changes.
+
+9. **Wait for review and feedback:**
+   - Address any comments or requested changes from reviewers.
+
+Once your pull request is approved and merged, your feature will be included in the next release of TAER-Core.
+
 ## Creating a New Release
 
 This project uses GitHub Actions to automate the release process. To create a new release, follow these steps:
